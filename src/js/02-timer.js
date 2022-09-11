@@ -22,19 +22,21 @@ const options = {
       startButton.addEventListener('click', onStart);
       const startTime = selectedDates[0];
       function onStart() {
+        startButton.setAttribute('disabled', true);
         timerId = setInterval(() => {
           const currentTime = Date.now();
           const deltaTime = startTime - currentTime;
-          console.log(deltaTime);
+          if (deltaTime <= 0) {
+            clearInterval(timerId);
+            return;
+          }
           const a = convertMs(deltaTime);
           console.log(a);
+
           updateDataClock(dataDays, a.days);
           updateDataClock(dataHours, a.hours);
           updateDataClock(dataMinutes, a.minutes);
           updateDataClock(dataSeconds, a.seconds);
-          if (deltaTime <= 0) {
-            clearInterval(timerId);
-          }
         }, 1000);
       }
     }
@@ -65,4 +67,3 @@ function convertMs(ms) {
 function updateDataClock(place, value) {
   place.textContent = value;
 }
-// updateDataClock(dataDays, 10);
